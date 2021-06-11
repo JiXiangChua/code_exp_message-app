@@ -13,9 +13,27 @@ import firebase from "../database/firestoreDB";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 
+const db = firebase.firestore();
+const auth = firebase.auth();
+
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorText, setErrorText] = useState("");
+
+  function login() {
+    Keyboard.dismiss();
+    auth
+      .signInWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        console.log("Signed in!");
+        navigation.navigate("Chat", { email });
+      })
+      .catch((error) => {
+        console.log("Error!");
+        setErrorText(error.message);
+      });
+  }
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -37,9 +55,10 @@ export default function LoginScreen({ navigation }) {
           onChangeText={(text) => setPassword(text)}
         ></TextInput>
 
-        <TouchableOpacity style={styles.loginButton} onPress={null}>
+        <TouchableOpacity style={styles.loginButton} onPress={login}>
           <Text style={styles.buttonText}>LOGIN</Text>
         </TouchableOpacity>
+        <Text style={styles.errorText}>{errorText}</Text>
       </View>
     </TouchableWithoutFeedback>
   );
@@ -79,5 +98,12 @@ const styles = StyleSheet.create({
   buttonText: {
     fontWeight: "bold",
     color: "white",
+  },
+  errorText: {
+    color: "red",
+    marginTop: 20,
+    marginLeft: 20,
+    marginRight: 20,
+    height: 40,
   },
 });
