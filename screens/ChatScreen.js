@@ -1,22 +1,15 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import firebase from "./database/firestoreDB";
+import firebase from "../database/firestoreDB";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
-import LoginScreen from "./screens/LoginScreen";
-import ChatScreen from "./screens/ChatScreen";
 
-const Stack = createStackNavigator();
-
-export default function App() {
+export default function ChatScreen() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Chat" component={ChatScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <View style={styles.container}>
+      <Text></Text>
+    </View>
   );
 }
 
