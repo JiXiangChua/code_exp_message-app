@@ -17,9 +17,21 @@ export default function ChatScreen({ navigation }) {
     const unsubscribe = db
       .orderBy("createdAt", "desc")
       .onSnapshot((collectionSnapshot) => {
-        const serverMessages = collectionSnapshot.docs.map((docs) =>
-          docs.data()
-        );
+        const serverMessages = collectionSnapshot.docs.map((docs) => {
+          const data = docs.data();
+          console.log(data);
+          //Above shows us that createdAt is now an object, with "seconds"
+          // and "nanoseconds". If we just take the former x 1000, we can re-
+          //create a JS date...
+
+          const jsDate = new Date(data.createdAt.seconds * 1000);
+
+          const newDoc = {
+            ...data,
+            createdAt: jsDate, // this overwrites the existing createdAt
+          };
+          return newDoc;
+        });
         setMessages(serverMessages);
       });
 
